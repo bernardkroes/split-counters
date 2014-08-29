@@ -73,6 +73,8 @@ To enable the 'counters' dashboard (and the Split dashboard), add this to your r
   mount Split::Countersdashboard, :at => 'splitcounters', :constraints => Whitelist.new
 ```
 
+This will make the counters dashboard available at /splitcounters (in development mode or from 127.0.0.1).
+
 ## Development
 
 Source hosted at [GitHub](http://github.com/andrew/split-counters).

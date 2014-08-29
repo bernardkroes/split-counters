@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<link href="<%= url 'reset.css' %>" media="screen" rel="stylesheet" type="text/css">
+<link href="<%= url 'style.css' %>" media="screen" rel="stylesheet" type="text/css">
+<script type="text/javascript" src='<%= url 'countersdashboard.js' %>'></script>
+<title>Split Counters</title>
+
+</head>
+<body>
+  <div class="header">
+    <h1>Split Counters Dashboard</h1>
+    <p class="environment"><%= @current_env %></p>
+  </div>
+
+  <div id="main">
+    <%= yield %>
+  </div>
+
+  <div id="footer">
+    <p>
+      <a href="http://github.com/bernardkroes/split-counters">Split Counters</a>.
+      Powered by <a href="http://github.com/andrew/split">Split</a> v<%=Split::VERSION %>
+    </p>
+  </div>
+</body>
+</html>

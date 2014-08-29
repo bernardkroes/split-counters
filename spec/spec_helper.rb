@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'split'
 require 'split/helper'
-require 'split/analytics'
+require 'split/counters'
 require 'ostruct'
 
 def session

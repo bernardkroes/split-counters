@@ -1,6 +1,6 @@
 # Split::Counters
 
-An extension to [Split](http://github.com/andrew/split) to push test data to google analytics.
+An extension to [Split](http://github.com/andrew/split) to add counters per experiment and alternative.
 
 ## Requirements
 
@@ -12,6 +12,12 @@ If you are using bundler add split to your Gemfile:
 
 ```ruby
 gem 'split-counters', :require => 'split/counters'
+```
+
+and if you want to use the separate 'counters' dashboard:
+
+```ruby
+gem 'split-counters', :require => ['split/counters', 'split/countersdashboard']
 ```
 
 Then run:
@@ -34,11 +40,37 @@ require 'split/counters'
 
 ## Usage
 
+A simple example in a Rails app could be:
 ```ruby
-ab_counter_inc("Counter Name", "Experiment name", "Alternative name")
+def index
+  the_ab_test = ab_test("exp", "alt1", "alt2")
 
-ab_counter_inc("PageViews", "experiment1", ab_test("experiment1", "alt1", "alt2"))
-ab_counter_inc("Clickouts", "experiment1", ab_test("experiment1", "alt1", "alt2"))
+  ab_counter_inc("IndexViews", "exp", the_ab_test)
+  ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+end
+
+def other
+  the_ab_test = ab_test("exp", "alt1", "alt2")
+
+  ab_counter_inc("OtherViews", "exp", the_ab_test)
+  ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+end
+```
+
+## Counter Dashboard
+
+![Counters Dashboard](/screenshots/screenshot1.png?raw=true "Counters Dashboard")
+
+To enable the 'counters' dashboard (and the Split dashboard), add this to your routes:
+
+```ruby
+  class Whitelist
+    def matches?(request) 
+      (request.remote_ip == '127.0.0.1') || (Rails.env == 'development')
+    end
+  end
+  mount Split::Dashboard, :at => 'split', :constraints => Whitelist.new
+  mount Split::Countersdashboard, :at => 'splitcounters', :constraints => Whitelist.new
 ```
 
 ## Development

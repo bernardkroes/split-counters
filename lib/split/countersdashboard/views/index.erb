@@ -1,0 +1,9 @@
+<% if @counter_names.any? %>
+  <p class="intro">The list below contains all the registered counters.</p>
+  <% @counter_names.each do |counter_name| %>
+    <%= erb :_counter, :locals => {:counter_name => counter_name} %>
+  <% end %>
+<% else %>
+  <p class="intro">No counters have been registered.</p>
+<% end %>
+

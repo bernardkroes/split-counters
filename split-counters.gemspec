@@ -6,7 +6,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Bernard Kroes"]
   gem.email         = ["bernardkroes@gmail.com"]
   gem.summary       = %q{Split extension for counting things per experiment and alternative}
-  gem.homepage      = "https://github.com/andrew/split-counters"
+  gem.description   = %q{This gem adds counters to Split}
+  gem.homepage      = "https://github.com/bernardkroes/split-counters"
   gem.license       = 'MIT'
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }

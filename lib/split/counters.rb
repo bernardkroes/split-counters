@@ -1,15 +1,17 @@
 require "split/helper"
 
 module Split
-  module Counters
+  module CounterHelper
     def ab_counter_inc(counter_name, experiment, alternative)
       begin
-        self.inc(counter_name, experiment, alternative)
-      rescue
+        Split::Counters.inc(counter_name, experiment, alternative)
+      rescue => e
         raise(e) unless Split.configuration.db_failover
       end
     end
+  end
 
+  module Counters
     def self.hash_name_for_name(in_name)
       "co:#{in_name}"
     end
@@ -19,23 +21,23 @@ module Split
     end
 
     def self.inc(name, experiment, alternative)
-      Split.redis.hincrby(Split::Counter.hash_name_for_name(name), Split::Counter.keyname_for_experiment_and_alternative(experiment, alternative), 1)
+      Split.redis.hincrby(Split::Counters.hash_name_for_name(name), Split::Counters.keyname_for_experiment_and_alternative(experiment, alternative), 1)
     end
 
     def self.current_value(name, experiment, alternative)
-      Split.redis.hget(Split::Counter.hash_name_for_name(name), Split::Counter.keyname_for_experiment_and_alternative(experiment, alternative))
+      Split.redis.hget(Split::Counters.hash_name_for_name(name), Split::Counters.keyname_for_experiment_and_alternative(experiment, alternative))
     end
 
     def self.exists?(name)
-      Split.redis.exists(Split::Counter.hash_name_for_name(name))
+      Split.redis.exists(Split::Counters.hash_name_for_name(name))
     end
 
     def self.delete(name)
-      Split.redis.del(Split::Counter.hash_name_for_name(name))
+      Split.redis.del(Split::Counters.hash_name_for_name(name))
     end
 
     def self.reset(name, experiment, alternative)
-      Split.redis.hdel(Split::Counter.hash_name_for_name(name), Split::Counter.keyname_for_experiment_and_alternative(experiment, alternative))
+      Split.redis.hdel(Split::Counters.hash_name_for_name(name), Split::Counters.keyname_for_experiment_and_alternative(experiment, alternative))
     end
 
     def self.all_values_hash(name)
@@ -56,12 +58,12 @@ module Split
 end
 
 module Split::Helper
-  include Split::Counters
+  include Split::CounterHelper
 end
 
 if defined?(Rails)
   class ActionController::Base
-    ActionController::Base.send :include, Split::Counters
-    ActionController::Base.helper Split::Counters
+    ActionController::Base.send :include, Split::CounterHelper
+    ActionController::Base.helper Split::CounterHelper
   end
 end

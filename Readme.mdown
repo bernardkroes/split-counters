@@ -45,15 +45,19 @@ A simple example in a Rails app could be:
 def index
   the_ab_test = ab_test("exp", "alt1", "alt2")
 
-  ab_counter_inc("IndexViews", "exp", the_ab_test)
-  ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+  if !exclude_visitor?
+    ab_counter_inc("IndexViews", "exp", the_ab_test)
+    ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+  end
 end
 
 def other
   the_ab_test = ab_test("exp", "alt1", "alt2")
 
-  ab_counter_inc("OtherViews", "exp", the_ab_test)
-  ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+  if !exclude_visitor?
+    ab_counter_inc("OtherViews", "exp", the_ab_test)
+    ab_counter_inc("PageViews", "exp", ab_test("exp", "alt1", "alt2"))
+  end
 end
 ```
 

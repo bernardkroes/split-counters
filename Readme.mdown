@@ -77,8 +77,8 @@ This will make the counters dashboard available at /splitcounters (in developmen
 
 ## Development
 
-Source hosted at [GitHub](http://github.com/andrew/split-counters).
-Report Issues/Feature requests on [GitHub Issues](http://github.com/andrew/split-counters/issues).
+Source hosted at [GitHub](http://github.com/bernardkroes/split-counters).
+Report Issues/Feature requests on [GitHub Issues](http://github.com/bernardkroes/split-counters/issues).
 
 Tests can be run with `rake spec`
 

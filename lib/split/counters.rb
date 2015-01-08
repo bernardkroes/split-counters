@@ -21,6 +21,7 @@ module Split
     end
 
     def self.inc(name, experiment, alternative)
+      Split.redis.sadd(:counters, name)
       Split.redis.hincrby(Split::Counters.hash_name_for_name(name), Split::Counters.keyname_for_experiment_and_alternative(experiment, alternative), 1)
     end
 
@@ -33,6 +34,7 @@ module Split
     end
 
     def self.delete(name)
+      Split.redis.srem(:counters, name)
       Split.redis.del(Split::Counters.hash_name_for_name(name))
     end
 
@@ -52,7 +54,7 @@ module Split
     end
 
     def self.all_counter_names
-      Split.redis.keys("co:*").collect { |k| k.gsub(/^.*:/,"") }
+      Split.redis.smembers(:counters)
     end
   end
 end

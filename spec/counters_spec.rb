@@ -17,6 +17,7 @@ describe Split::Counters do
     it "should create a counter upon using it, if it does not exist" do
       Split::Counters.inc('co', 'exp1', 'alt1')
       Split::Counters.current_value('co', 'exp1', 'alt1').should eq("1")
+      Split::Counters.all_counter_names.should include('co')
     end
 
     it "should create a counter directly upon using it, if it does not exist" do
@@ -31,6 +32,7 @@ describe Split::Counters do
       Split::Counters.exists?('co').should eq(true)
       Split::Counters.delete('co')
       Split::Counters.exists?('co').should eq(false)
+      Split::Counters.all_counter_names.should_not include('co')
     end
 
     it "should be possible to reset a counter" do

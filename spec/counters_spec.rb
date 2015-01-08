@@ -30,6 +30,7 @@ describe Split::Counters do
     it "should be possible to delete a counter" do
       Split::Counters.inc('co','exp1', 'alt1')
       Split::Counters.exists?('co').should eq(true)
+      Split::Counters.all_counter_names.should include('co')
       Split::Counters.delete('co')
       Split::Counters.exists?('co').should eq(false)
       Split::Counters.all_counter_names.should_not include('co')

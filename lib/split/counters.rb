@@ -64,8 +64,10 @@ module Split::Helper
 end
 
 if defined?(Rails)
-  class ActionController::Base
-    ActionController::Base.send :include, Split::CounterHelper
-    ActionController::Base.helper Split::CounterHelper
+  ActiveSupport.on_load(:action_controller_base) do
+    class ActionController::Base
+      ActionController::Base.send :include, Split::CounterHelper
+      ActionController::Base.helper Split::CounterHelper
+    end
   end
 end
